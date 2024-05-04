@@ -14,12 +14,20 @@ loadConfig configFile = do
     let pairs = map (T.breakOn (T.pack "=")) contents
     return $ Map.fromList $ map (\(k,v) -> (T.strip k, T.strip $ T.drop 1 v)) pairs
 
+loadMainConfig :: IO (FilePath, FilePath)
+loadMainConfig = do
+    config <- loadConfig "suso.conf"
+    let configFile = T.unpack $ Map.findWithDefault (T.pack "config.txt") (T.pack "configFile") config
+    let dir = T.unpack $ Map.findWithDefault (T.pack ".") (T.pack "directory") config
+    return (configFile, dir)
+
+
 sortFiles :: Config -> FilePath -> IO ()
 sortFiles config dir = do
     isDir <- doesDirectoryExist dir
     if isDir
-        then sortDirectory config dir dir -- Pass the root directory path
-        else putStrLn "Please enter a valid directory."
+        then sortDirectory config dir dir
+        else putStrLn "[Error] no valid search directory!"
 
 sortDirectory :: Config -> FilePath -> FilePath -> IO ()
 sortDirectory config rootDir dir = do
@@ -44,10 +52,12 @@ sortFile config rootDir dir file = do
 
 main :: IO ()
 main = do
-    putStrLn "Enter configuration file path:"
-    configFile <- getLine
-    config <- loadConfig configFile
-    putStrLn "Enter directory to sort:"
-    dir <- getLine
-    sortFiles config dir
+    putStrLn "Loading main configuration from suso.conf..."
+    (fileRulesConfig, rootSearchDirectory) <- loadMainConfig
+    putStrLn $ "Using file rules: " ++ fileRulesConfig
+    putStrLn $ "Using root search directory: " ++ rootSearchDirectory
+    putStrLn "Loading additional configuration..."
+    config <- loadConfig fileRulesConfig
+    putStrLn "Sorting files..."
+    sortFiles config rootSearchDirectory
     putStrLn "Sorting complete."
