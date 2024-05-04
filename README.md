@@ -1,5 +1,20 @@
-Config:
-Jede Zeile ist eine Konfiguration für das verschieben
+**SuSo**
+-- 
+Erste Ausführung:
+kopieren und umbenennen von:
+bsp-suso.conf >> suso.conf
+suso.conf entsprechend editieren:
+configFile=files.conf
+directory=home/gbs/Dokumente/supersort/t1
+
+ghci> :l suso.hs
+ghci> main
+
+--
+Allgemeine Erklärungen:
+
+Dateiregeln:
+Jede Zeile ist eine Konfiguration für das verschieben einer spezifischen Dateiendung
 Beispiel: .txt ist das Dateiformat und TextFiles der Ordner
 
 .txt = TextFiles
@@ -11,14 +26,3 @@ Beispiel: .txt ist das Dateiformat und TextFiles der Ordner
 
 C:\Users\Robert\Documents\GitHub\supersort\test.conf
 C:\Users\Robert\Documents\GitHub\supersort\Testdir
-
--- 
-Ausführung:
-In GHCi terminal:
-ghci> :l chatgpt.hs
-ghci> main
-Enter configuration file path:
-test2.conf
-Enter directory to sort:
-t1
-Sorting complete.
