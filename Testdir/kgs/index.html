@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <title>3-2-1 gekündigt!</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <style>
+        .header {
+            text-align: center;
+        }
+
+        .logo {
+            margin: 0 auto;
+            max-width: 200px;
+            padding: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigationsleiste -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <!-- Logo und Titel -->
+            <a class="navbar-brand" href="./index.html"><img class="logo" src="./img/header.png" alt="Logo"></a>
+
+            <!-- Schalter für mobile Ansicht -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navigationslinks -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./index.html">Startseite</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./feedback.html">Feedback</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./about.html">Über uns</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <form id="personalnummerForm">
+
+            <div class="form-group">
+                <label for="personalnummer">Mitarbeiter wählen:
+                    <select class="form-control" id="personalnummer" required></label>
+                <!-- Die Optionen werden von der API geladen -->
+                </select>
+            </div>
+        </form>
+        <!-- Aufgabe Teil I: Allgemeine Personalinformationen && Aufgabe Teil V: 6-stellige PNr. -> Datensatz aus SQL DB laden -->
+        <div class="py-3" id="weitereDaten" style="display: none;">
+            <div class="border p-3">
+                <h2 class="mt-4">Informationen</h2>
+                <form id="weitereDatenForm">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="geburtstag">Geburtstag:</label>
+                        <input type="text" class="form-control" id="geburtstag" required>
+
+                        <label for="alter">Alter:</label>
+                        <input type="text" class="form-control" id="alter" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="plz">PLZ Ort:</label>
+                        <input type="text" class="form-control" id="plz" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adresse">Adresse:</label>
+                        <input type="text" class="form-control" id="adresse" required>
+                    </div>
+            </div>
+            <!-- Aufgabe Teil II: weitere Fragen -->
+            <div class="border p-3 my-3">
+                <h2 class="mt-4">Einschränkungen</h2>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="form-check my-1">
+                                <input type="checkbox" class="form-check-input" id="betriebsratMitgliedJa"
+                                    name="betriebsratMitgliedJa" value="Ja">
+                                <label for="betriebsratMitgliedJa" class="form-check-label mx-2">Ist Betriebsrat
+                                    Mitglied</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="form-check my-1">
+                                <input type="checkbox" class="form-check-input" id="azubiJa" name="azubiJa" value="Ja">
+                                <label for="azubiJa" class="form-check-label mx-2">Ist Azubi</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="form-check my-1">
+                                <input type="checkbox" class="form-check-input" id="behindertJa" name="behindertJa"
+                                    value="Ja">
+                                <label for="behindertJa" class="form-check-label mx-2">Ist Schwerbehindert</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="form-check my-1">
+                                <input type="checkbox" class="form-check-input" id="mutterschutzJa"
+                                    name="mutterschutzJa" value="Ja">
+                                <label for="mutterschutzJa" class="form-check-label mx-2">Im Mutterschutz</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Aufgabe Teil IV & VI: Dauer Betriebszugehörigkeit Dauer, Eintrittsdatum, Kündigungsfrist nach Tabelle §622BGB, Regelabfindung berechnen -->
+            <div class="border p-3">
+                <h2 class="mt-4">Beschäftigungsverhältnisse</h2>
+                <div class="form-group">
+                    <p></p><a href="https://www.gesetze-im-internet.de/bgb/__622.html" target="_blank">§622 BGB
+                        Kündigungsfristen</a>
+                    </p></br>
+                    <ul id="beschaeftigungenList"></ul>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Weiter</button>
+            </form>
+        </div>
+        <!-- Aufgabe Teil I.I: Betriebsrat informiert && schweres Vergehen Checkboxes -->
+        <div class="py-3" id="betriebsratForm" style="display: none;">
+            <h2 class="mt-4">Weitere Informationen</h2>
+            <form id="betriebsratInfoForm">
+                <div class="border p-3">
+                    <div class="form-check my-1">
+                        <input type="checkbox" class="form-check-input" id="betriebsratJa" value="Ja">
+                        <label class="form-check-label mx-2" for="betriebsratJa">Wurde der Betriebsrat bereits
+                            informiert?</label>
+                    </div>
+                    <div class="form-check my-1">
+                        <input type="checkbox" class="form-check-input" id="schweresVergehenJa" value="Ja">
+                        <label class="form-check-label mx-2" for="schweresVergehenJa">Hat der Mitarbeiter sich eines
+                            schweren Vergehens schuldig gemacht?</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Weiter</button>
+            </form>
+        </div>
+        <!-- Aufgabe Teil III: Kündigungsgründe -->
+        <div class="py-3" id="kundigungsgrundForm" style="display: none;">
+            <h2 class="mt-4">Kündigungsgrund</h2>
+            <form id="kundigungsgrundInfoForm">
+                <div class="border p-3">
+                    <div class="form-group">
+                        <label for="kundigungsgrund">Bitte wählen Sie den Kündigungsgrund:</label>
+                        <select class="form-control" id="kundigungsgrund" required>
+                            <option value="A">Mitarbeiter ist für die Stelle nicht (mehr) geeignet</option>
+                            <option value="B">Mitarbeiter hat sich falsch verhalten</option>
+                            <option value="C">Aufgrund der wirtschaftlichen Lage entfällt der Arbeitsplatz des
+                                Mitarbeiters
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Kündigung prüfen</button>
+            </form>
+        </div>
+        <!-- Aufgabe Teil VII, VIII: Kündigungsversuch ergebnis ausgabe, *.pdf Dateien generieren, *.pdf zum Download anbieten -->
+        <div class="py-3" id="kundigungErgebnis" style="display: none;">
+            <h2 class="mt-4">Kündigungsergebnis</h2>
+            <div class="border p-3">
+                <p id="kundigungText"></p>
+                <div id="statusPerson" style="display: none;" class="mt-4 text-info">
+                    betriebsrat brief generieren, abmahnung generieren, abfindung kündigung generieren
+                </div>
+                </br>
+                <div class="border p-3">*.pdf Dateien:
+                    <p id="files"></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="resetbutton" class="mb-4" style="padding-top: 15px; display: none;">
+            <button type="button" class="btn btn-primary bg-danger border border-dark"
+                onclick="javascript:location.reload();">Reset</button>
+        </div>
+    </div>
+    <!-- scripts pfade -->
+    <script src="./scripts/berechnungen.js"></script>
+    <script src="./scripts/apicalls.js"></script>
+    <script src="./scripts/events.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -11,3 +11,14 @@ Beispiel: .txt ist das Dateiformat und TextFiles der Ordner
 
 C:\Users\Robert\Documents\GitHub\supersort\test.conf
 C:\Users\Robert\Documents\GitHub\supersort\Testdir
+
+-- 
+Ausführung:
+In GHCi terminal:
+ghci> :l chatgpt.hs
+ghci> main
+Enter configuration file path:
+test2.conf
+Enter directory to sort:
+t1
+Sorting complete.

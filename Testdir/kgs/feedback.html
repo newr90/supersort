@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Carousel</title>
+    <!-- Include Bootstrap CSS and JavaScript -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .header {
+            text-align: center;
+        }
+
+        .logo {
+            margin: 0 auto;
+            max-width: 200px;
+            padding: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigationsleiste -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <!-- Logo und Titel -->
+            <a class="navbar-brand" href="#"><img class="logo" src="./img/header.png" alt="Logo"></a>
+
+            <!-- Schalter für mobile Ansicht -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navigationslinks -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./index.html">Startseite</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./feedback.html">Feedback</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./about.html">Über uns</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Feedback Karussell</h1></br>
+        <h3>Das sagen von uns gekündigte:</h3>
+        <div id="feedbackCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
+            <div class="carousel-inner">
+                <!-- Feedback Item 1 -->
+                <div class="carousel-item active">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Ich wurde rücksichtslos von 3-2-1 gekündigt und aus meinem Job geworfen
+                                -
+                                Ich war noch nie so am Boden zerstört!!</p>
+                            <p class="card-text">- John Doe</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback Item 2 -->
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Meinen Job zu verlieren hat sich am Anfang angefühlt wie ein Disaster -
+                                war dann auch tatsächlich so. Konnte ich mir vorher nie vorstellen.</p>
+                            <p class="card-text">- Jane Smith</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback Item 3 -->
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Ich hab meinen Job sowieso nicht gemocht, daher hat mir die Kündigung
+                                von
+                                3-2-1 GEKÜNDIGT in die Karten gespielt, um meine echte Leidenschaft zu verfolgen - Hartz
+                                IV.</p>
+                            <p class="card-text">- Alice Johnson</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback Item 4 -->
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Gekündigt werden hat mir beigebracht was es heißt standhaft zu sein.
+                                Nun mache ich meinen Job ohne Gehalt, und damit völlig steuerfrei! Das hat die Firma nun
+                                davon. Haha, solche Amateure.</p>
+                            <p class="card-text">- Bob Anderson</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback Item 5 -->
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Ich dachte gekündigt zu werden wäre das Ende! Aber es war ein Frischer
+                                Start in mein Leben als Sozialschmarotzer.</p>
+                            <p class="card-text">- Sarah Brown</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback Item 6 -->
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Nachdem ich gekündigt wurde habe ich meine eigene Wertlosigkeit
+                                realisiert und es hat mich ermutigt einen Job zu finden in dem so behandelt werde wie
+                                ich es verdient habe. Danke 3-2-1 gekündigt! <3 </p>
+                                    <p class="card-text">- Michael Wilson</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#feedbackCarousel" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#feedbackCarousel" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
+        </div>
+        </br>
+        </br>
+        <h3>Das sagt die Personalabteilung:</h3>
+        <div id="feedbackCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="7000">
+            <div class="carousel-inner">
+                <!-- Feedback Item 1 -->
+                <div class="carousel-item active">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Meine Mikrowelle wurde letzte Woche entführt. Mit 3-2-1 gekündigt ist
+                                mir das Mitleid meiner Firmenkollegen sicher!</p>
+                            <p class="card-text">- Hans Dampf</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback Item 2 -->
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Seit ich 3-2-1 gekündigt in der Firma einsetze hat sich die
+                                Arbeitsmoral um ein vielfaches multipliziert. Und falls mal einer nicht spurt -
+                                Kündigung ist schon so gut wie raus!</p>
+                            <p class="card-text">- Sir kündige a lot</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback Item 3 -->
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Mein Leben ist miserabel und so fühle ich mich auch. Dank 3-2-1
+                                gekündigt kann ich andere daran teilhaben lassen.</p>
+                            <p class="card-text">- Peter Pan</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback Item 4 -->
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Dank 3-2-1 gekündigt kann ich bereits über die Hälfte der Belegschaft
+                                vor meinem ersten Kaffee aus der Firma werfen.</p>
+                            <p class="card-text">- Wütender Wüterich</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback Item 5 -->
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">So einfach war mein Job noch nie - Dumm geguckt und ZACK - Kündigung
+                                ist raus!</p>
+                            <p class="card-text">- Wütender Wüterich Jr</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback Item 6 -->
+                <div class="carousel-item">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Egal ob ich im Stau warten muss, oder der ICE mal wieder zu spät kommt
+                                - ich kann jederzeit Angestellte kündigen. Super!</p>
+                            <p class="card-text">- Peter, König von Deutschland</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#feedbackCarousel" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#feedbackCarousel" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

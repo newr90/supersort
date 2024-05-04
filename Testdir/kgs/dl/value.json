@@ -1,0 +1,22 @@
+{
+  "personalnummer": "100005",
+  "grund": "Mitarbeiter ist für die Stelle nicht (mehr) geeignet",
+  "unternehmen": "Sample Company",
+  "absender": "Sample Company, Sample Address",
+  "empfaenger": {
+    "name": "Anton Anfänger",
+    "straße_hausnummer": "Amateuerweg 2",
+    "plz_ort": "37844 Loch"
+  },
+  "name": "Anton Anfänger",
+  "ort": "Sample City",
+  "texttype": "verhaltungsbedingte_kündigung, abfindungangsangebot, abmahnung, bestätungsformular, betriebsbedingte_kündigung, fristlosekuendigung, personenbedingte_kündigung, schreiben_betriebsrat, verhaltungsbedingte_kündigung",
+  "ihr_Name": "Samuel Adams",
+  "Ihre_Position": "Personalabteilung",
+  "e_mail": "your.email@example.com",
+  "unser_zeichen": "ABC-123",
+  "telefon": "1234567890",
+  "kündigungsfrist": 1,
+  "ausfürliche_beschreibung": "Sample description",
+  "abfindung": "2000€"
+}
