@@ -25,7 +25,9 @@ extra-source-files:
 
 executable supersort
     main-is:          Main.hs
-
+    data-files: suso.conf
+    extra-source-files: suso.conf
+    
     -- Modules included in this executable, other than Main.
     -- other-modules:
 
@@ -34,3 +36,4 @@ executable supersort
     build-depends:    base ^>=4.17.2.0, text, containers, filepath, directory
     hs-source-dirs:   app
     default-language: Haskell2010
+    
