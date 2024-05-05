@@ -22,11 +22,13 @@ maintainer:         contact@rnmail.de
 extra-source-files:
     CHANGELOG.md
     README.md
+    suso.conf
+
+data-files: suso.conf
+    
 
 executable supersort
     main-is:          Main.hs
-    data-files: suso.conf
-    extra-source-files: suso.conf
     
     -- Modules included in this executable, other than Main.
     -- other-modules:
