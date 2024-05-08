@@ -15,8 +15,14 @@ directory=home/gbs/Dokumente/supersort/t1
 
 
 ```bash
-ghci> :l suso.hs
-ghci> main
+gbs@gbs-Haskell:~/Dokumente/supersort-main$ cd gui_weather/
+gbs@gbs-Haskell:~/Dokumente/supersort-main/gui_weather$ nix-shell
+
+[nix-shell:~/Dokumente/supersort-main/gui_weather]$ make build
+ghc ./Main.hs -outputdir _build -o ./weather_gui -threaded -Wall -O2
+Do you want to execute ./weather_gui? (y/n)
+y
+
 ```
     
 ---
