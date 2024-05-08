@@ -1,0 +1,55 @@
+### Step 1: Install Dependencies
+
+Ensure you have the necessary dependencies installed:
+
+- **Nix**: If you haven't already, install the Nix package manager on your system.
+- **GHC**: You need the Glasgow Haskell Compiler. It's likely already installed if you're doing Haskell development.
+- **GTK3**: You need GTK3 libraries and development headers installed on your system.
+
+### Step 2: Setup Nix Environment
+
+Your `default.nix` file defines the environment for your project. Run the following command in your project directory to enter the Nix environment:
+
+```bash
+nix-shell
+```
+
+This will set up an environment with the dependencies specified in your `default.nix`.
+
+### Step 3: Build the Application
+
+Run the build command specified in your `Makefile`:
+
+```bash
+make build
+```
+
+This will compile your Haskell code and create an executable named `gui-haskell-app`.
+
+### Step 4: Run the Application
+
+After building the application, you can run it from the command line:
+
+```bash
+./gui-haskell-app
+```
+
+### Step 5: Clean Up (Optional)
+
+If you want to clean up the build artifacts, you can run:
+
+```bash
+make clean
+```
+
+### Additional Notes:
+
+- **Development Mode**: If you want to run your application in development mode with automatic recompilation on file changes, you can use `ghcid`:
+
+```bash
+make dev
+```
+
+This will run `ghcid` with your `Main.hs` file.
+
+- **Debugging**: For debugging purposes, you can inspect the `stdout` and `stderr` of your application while it's running to see any error messages or debug output.
