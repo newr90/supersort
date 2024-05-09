@@ -1,17 +1,15 @@
--- Test to send a sms via my SMS Gateway ... only for me and the get http showcase
---cabal install network
-
 import Network.HTTP.Simple
 import Data.Text.Encoding (encodeUtf8)
+import Data.ByteString.Char8 (pack)
 
 main :: IO ()
 main = do
     let url = "http://192.168.50.103/goform/goform_set_cmd_process"
 
     -- Define headers inside the main function
-    let headers = [ ("Origin", "http://192.168.50.103")
-                  , ("Referer", "http://192.168.50.103/index.html")
-                  , ("Cookie", "Authorization=Basic <your_base64_encoded_password>")
+    let headers = [ (pack "Origin", pack "http://192.168.50.103")
+                  , (pack "Referer", pack "http://192.168.50.103/index.html")
+                  , (pack "Cookie", pack "Authorization=Basic <your_base64_encoded_password>")
                   ]
 
     let requestBody = "isTest=false&goformId=SEND_SMS&notCallback=true&Number=%2B491622472546&" <>
@@ -20,8 +18,8 @@ main = do
 
     -- Create the request object
     let request = setRequestHeaders (map (\(k, v) -> (encodeUtf8 k, encodeUtf8 v)) headers)
-                $ setRequestMethod "POST"
-                $ setRequestBodyLBS requestBody
+                $ setRequestMethod (pack "POST")
+                $ setRequestBodyLBS (pack requestBody)
                 $ parseRequest_ url
 
     -- Make the request and get the response
