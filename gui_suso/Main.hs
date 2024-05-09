@@ -6,11 +6,59 @@ import Data.Fixed (Centi)
 import Control.Concurrent (threadDelay, forkIO)
 import System.Random (randomRIO)
 import Text.Read (readMaybe)
-import Control.Monad (unless)
+import Control.Monad (unless, forM_)
 
 import qualified GI.Gtk as Gtk
 import qualified GI.Gio as Gio
 import qualified GI.GLib as GLib
+import System.Directory (createDirectoryIfMissing, doesDirectoryExist, listDirectory, renameFile)
+import System.FilePath.Posix ((</>), takeExtension)
+import qualified Data.Map.Strict as Map
+import Data.Text.IO (readFile, writeFile)
+
+type Config = Map.Map Text Text
+
+loadConfig :: FilePath -> IO Config
+loadConfig configFile = do
+    contents <- Text.lines <$> Data.Text.IO.readFile configFile
+    let pairs = map (Text.breakOn (Text.pack "=")) contents
+    return $ Map.fromList $ map (\(k,v) -> (Text.strip k, Text.strip $ Text.drop 1 v)) pairs
+
+loadMainConfig :: IO (FilePath, FilePath)
+loadMainConfig = do
+    config <- loadConfig "suso.conf"
+    let configFile = Text.unpack $ Map.findWithDefault (Text.pack "config.txt") (Text.pack "configFile") config
+    let dir = Text.unpack $ Map.findWithDefault (Text.pack ".") (Text.pack "directory") config
+    return (configFile, dir)
+
+
+sortFiles :: Config -> FilePath -> IO ()
+sortFiles config dir = do
+    isDir <- doesDirectoryExist dir
+    if isDir
+        then sortDirectory config dir dir
+        else putStrLn "[Error] no valid search directory!"
+
+sortDirectory :: Config -> FilePath -> FilePath -> IO ()
+sortDirectory config rootDir dir = do
+    files <- listDirectory dir
+    forM_ files $ \file -> do
+        let filePath = dir </> file
+        isDir <- doesDirectoryExist filePath
+        if isDir
+            then sortDirectory config rootDir filePath
+            else sortFile config rootDir dir file
+
+sortFile :: Config -> FilePath -> FilePath -> FilePath -> IO ()
+sortFile config rootDir dir file = do
+    let ext = Text.pack $ takeExtension file
+    case Map.lookup ext config of
+        Just subdir -> do
+            let destDir = rootDir </> Text.unpack subdir
+            createDirectoryIfMissing True destDir
+            let destFile = destDir </> file
+            renameFile (dir </> file) destFile
+        Nothing -> return ()
 
 main :: IO ()
 main = do
@@ -21,7 +69,7 @@ main = do
   return ()
 
 appId :: Text
-appId = Text.pack "io.serokell.gui-suso-app"
+appId = Text.pack "io.gbs.gui-suso-app"
 
 appActivate :: Gtk.Application -> IO ()
 appActivate app = do
@@ -33,25 +81,34 @@ appActivate app = do
   Gtk.setWidgetMargin vbox 10
   Gtk.containerAdd window vbox
   Gtk.widgetShow vbox
+  (fileRulesConfig, rootSearchDirectory) <- loadMainConfig
+  configFileEntry <- addEntry (Text.pack fileRulesConfig) vbox
+  directoryEntry <- addEntry (Text.pack rootSearchDirectory) vbox
   entryC <- addEntry (Text.pack "°C") vbox
   entryF <- addEntry (Text.pack "°F") vbox
   setEntryRelation entryC c_to_f entryF
   setEntryRelation entryF f_to_c entryC
-  button <- Gtk.buttonNew
-  Gtk.setButtonLabel button (Text.pack "start")
-  Gtk.setWidgetHalign button Gtk.AlignCenter
-  Gtk.containerAdd vbox button
-  _ <- Gtk.onButtonClicked button $
-    do Gtk.widgetSetSensitive button False
+  btnTestRun <- Gtk.buttonNew
+  Gtk.setButtonLabel btnTestRun (Text.pack "test sort")
+  Gtk.setWidgetHalign btnTestRun Gtk.AlignCenter
+  Gtk.containerAdd vbox btnTestRun
+  _ <- Gtk.onButtonClicked btnTestRun $
+    do Gtk.widgetSetSensitive btnTestRun False
        _ <- forkIO $ do
          c <- getWeather
          _ <- GLib.idleAdd GLib.PRIORITY_HIGH_IDLE $ do
            _ <- Gtk.entrySetText entryC (renderDouble c)
-           Gtk.widgetSetSensitive button True
+           Gtk.widgetSetSensitive btnTestRun True
            return False
          return ()
        return ()
-  Gtk.widgetShow button
+  btnRealRun <- Gtk.buttonNew
+  Gtk.setButtonLabel btnRealRun (Text.pack "start sort")
+  Gtk.setWidgetHalign btnRealRun Gtk.AlignCenter
+  Gtk.containerAdd vbox btnRealRun
+  _ <- Gtk.onButtonClicked btnRealRun $ callProvidedMain
+  Gtk.widgetShow btnTestRun
+  Gtk.widgetShow btnRealRun
   Gtk.widgetShow window
 
 setEntryRelation :: Gtk.Entry -> (Double -> Double) -> Gtk.Entry -> IO ()
@@ -96,3 +153,15 @@ getWeather :: IO Double
 getWeather = do
   threadDelay (3 * 1000000)
   randomRIO (-30, 30)
+
+callProvidedMain :: IO ()
+callProvidedMain = do
+  putStrLn "Loading main configuration from suso.conf..."
+  (fileRulesConfig, rootSearchDirectory) <- loadMainConfig
+  putStrLn $ "Using file rules: " ++ fileRulesConfig
+  putStrLn $ "Using root search directory: " ++ rootSearchDirectory
+  putStrLn "Loading additional configuration..."
+  config <- loadConfig fileRulesConfig
+  putStrLn "Sorting files..."
+  sortFiles config rootSearchDirectory
+  putStrLn "Sorting complete."
