@@ -60,9 +60,10 @@ sortFile config rootDir dir file = do
             renameFile (dir </> file) destFile
         Nothing -> return ()
 
+-- process main process entry
 main :: IO ()
 main = do
-  _ <- GLib.setenv "GDK_BACKEND" "x11" True  -- Set GDK_BACKEND environment variable
+  _ <- GLib.setenv "GDK_BACKEND" "x11" True  -- Set GDK_BACKEND environment variable because idk
   Just app <- Gtk.applicationNew (Just appId) []
   _ <- Gio.onApplicationActivate app (appActivate app)
   _ <- Gio.applicationRun app Nothing
@@ -71,6 +72,7 @@ main = do
 appId :: Text
 appId = Text.pack "io.gbs.gui-suso-app"
 
+-- gtk form paint main entry point
 appActivate :: Gtk.Application -> IO ()
 appActivate app = do
   window <- Gtk.applicationWindowNew app
@@ -84,10 +86,6 @@ appActivate app = do
   (fileRulesConfig, rootSearchDirectory) <- loadMainConfig
   configFileEntry <- addEntry (Text.pack fileRulesConfig) vbox
   directoryEntry <- addEntry (Text.pack rootSearchDirectory) vbox
-  entryC <- addEntry (Text.pack "°C") vbox
-  entryF <- addEntry (Text.pack "°F") vbox
-  setEntryRelation entryC c_to_f entryF
-  setEntryRelation entryF f_to_c entryC
   btnTestRun <- Gtk.buttonNew
   Gtk.setButtonLabel btnTestRun (Text.pack "test sort")
   Gtk.setWidgetHalign btnTestRun Gtk.AlignCenter
@@ -95,9 +93,7 @@ appActivate app = do
   _ <- Gtk.onButtonClicked btnTestRun $
     do Gtk.widgetSetSensitive btnTestRun False
        _ <- forkIO $ do
-         c <- getWeather
-         _ <- GLib.idleAdd GLib.PRIORITY_HIGH_IDLE $ do
-           _ <- Gtk.entrySetText entryC (renderDouble c)
+         c <- -- TODO: set handling function after btn click
            Gtk.widgetSetSensitive btnTestRun True
            return False
          return ()
@@ -111,6 +107,7 @@ appActivate app = do
   Gtk.widgetShow btnRealRun
   Gtk.widgetShow window
 
+-- set relation between two input fields
 setEntryRelation :: Gtk.Entry -> (Double -> Double) -> Gtk.Entry -> IO ()
 setEntryRelation entrySource conv entryTarget = do
   _ <- Gtk.onEditableChanged entrySource $
@@ -124,6 +121,7 @@ setEntryRelation entrySource conv entryTarget = do
              in Gtk.entrySetText entryTarget s'
   return ()
 
+-- add string input combined with a label to our gtk "form"
 addEntry :: Gtk.IsContainer a => Text -> a -> IO Gtk.Entry
 addEntry labelStr container = do
   hbox <- Gtk.boxNew Gtk.OrientationHorizontal 5
@@ -139,21 +137,7 @@ addEntry labelStr container = do
   Gtk.widgetShow hbox
   return entry
 
-c_to_f, f_to_c :: Double -> Double
-c_to_f = (+32) . (*1.8)
-f_to_c = (/1.8) . subtract 32
-
-parseDouble :: Text -> Maybe Double
-parseDouble = readMaybe . Text.unpack
-
-renderDouble :: Double -> Text
-renderDouble = Text.pack . show @Centi . realToFrac
-
-getWeather :: IO Double
-getWeather = do
-  threadDelay (3 * 1000000)
-  randomRIO (-30, 30)
-
+-- zeh sorting magic happens in here
 callProvidedMain :: IO ()
 callProvidedMain = do
   putStrLn "Loading main configuration from suso.conf..."
