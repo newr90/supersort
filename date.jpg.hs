@@ -21,7 +21,6 @@ getJpgCreationDate filePath = do
             -- Den Maybe-Wert in einen Maybe-String umwandeln, indem 'show' darauf angewendet wird.
             return $ fmap show maybeDateTime
 
--- Hauptfunktion des Programms.
 main :: IO ()
 main = do
     -- Das Aufnahmedatum aus der JPG-Datei 'example.jpg' extrahieren.
