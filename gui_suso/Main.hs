@@ -16,14 +16,20 @@ import System.FilePath.Posix ((</>), takeExtension)
 import qualified Data.Map.Strict as Map
 import Data.Text.IO (readFile, writeFile)
 
+-- define a type synonym for conf as a map of text keys to text values
 type Config = Map.Map Text Text
 
+-- load conf from file
 loadConfig :: FilePath -> IO Config
 loadConfig configFile = do
+    -- Read contents of the config file and split into lines
     contents <- Text.lines <$> Data.Text.IO.readFile configFile
+    -- Split each line into a key-value pair separated by '=' and strip whitespace
     let pairs = map (Text.breakOn (Text.pack "=")) contents
+    -- Construct a map from the list of key-value pairs
     return $ Map.fromList $ map (\(k,v) -> (Text.strip k, Text.strip $ Text.drop 1 v)) pairs
 
+-- load main configuration file and extract file paths
 loadMainConfig :: IO (FilePath, FilePath)
 loadMainConfig = do
     config <- loadConfig "suso.conf"
@@ -31,7 +37,7 @@ loadMainConfig = do
     let dir = Text.unpack $ Map.findWithDefault (Text.pack ".") (Text.pack "directory") config
     return (configFile, dir)
 
-
+-- recursively sort files in a directory based on configuration
 sortFiles :: Config -> FilePath -> IO ()
 sortFiles config dir = do
     isDir <- doesDirectoryExist dir
@@ -39,6 +45,7 @@ sortFiles config dir = do
         then sortDirectory config dir dir
         else putStrLn "[Error] no valid search directory!"
 
+-- recursively sort files in a directory
 sortDirectory :: Config -> FilePath -> FilePath -> IO ()
 sortDirectory config rootDir dir = do
     files <- listDirectory dir
@@ -49,6 +56,7 @@ sortDirectory config rootDir dir = do
             then sortDirectory config rootDir filePath
             else sortFile config rootDir dir file
 
+-- sort a single file based on its extension
 sortFile :: Config -> FilePath -> FilePath -> FilePath -> IO ()
 sortFile config rootDir dir file = do
     let ext = Text.pack $ takeExtension file
@@ -141,11 +149,14 @@ addEntry labelStr container = do
 callProvidedMain :: IO ()
 callProvidedMain = do
   putStrLn "Loading main configuration from suso.conf..."
+  -- load main config containing file rules and root sort path
   (fileRulesConfig, rootSearchDirectory) <- loadMainConfig
   putStrLn $ "Using file rules: " ++ fileRulesConfig
   putStrLn $ "Using root search directory: " ++ rootSearchDirectory
   putStrLn "Loading additional configuration..."
+  -- Load specific file to directory config
   config <- loadConfig fileRulesConfig
   putStrLn "Sorting files..."
+  -- finally.. sort files based on configuration
   sortFiles config rootSearchDirectory
   putStrLn "Sorting complete."

@@ -28,3 +28,4 @@ files.conf
 gui_weather/weather_gui
 console_suso/suso_console
 gui_suso/gui-haskell-app
+console_suso/Testdir/*
